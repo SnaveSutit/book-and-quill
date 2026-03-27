@@ -5,8 +5,11 @@ import {
 	STYLE_KEYS,
 	TextComponentStyle,
 	TextElement,
+	TextObject,
 } from './definitions'
 import tinycolor from 'tinycolor2'
+import { TextComponentParser } from './parser'
+import { TextComponentStringifier } from './stringifier'
 
 export class TextComponent {
 	static defaultStyle: TextComponentStyle = { color: 'white' }
@@ -89,16 +92,135 @@ export class TextComponent {
 		}
 	}
 
-	constructor(public text: TextElement) {}
+	static parse(text: string, options?: { minecraftVersion?: string }): TextElement {
+		const parser = new TextComponentParser(options)
+		return parser.parse(text)
+	}
 
-	toString(minify = true, minecraftVersion = TextComponent.defaultMinecraftVersion) {}
+	static stringify(
+		component: TextElement,
+		options?: { minecraftVersion?: string; minify?: boolean }
+	): string {
+		const stringifier = new TextComponentStringifier(options)
+		return stringifier.stringify(component)
+	}
 
-	fromString(minecraftVersion = TextComponent.defaultMinecraftVersion) {}
+	static fromString(str: string, options?: { minecraftVersion?: string }): TextComponent {
+		const parser = new TextComponentParser(options)
+		return new TextComponent(parser.parse(str))
+	}
 
-	toJSON() {}
+	static fromJSON(json: TextElement): TextComponent {
+		return new TextComponent(json)
+	}
 
+	static getComponentStyle(
+		component: TextElement,
+		parentStyle: TextComponentStyle = TextComponent.defaultStyle
+	): TextComponentStyle {
+		switch (true) {
+			case Array.isArray(component):
+				if (component.length === 0) return { ...parentStyle }
+				return TextComponent.getComponentStyle(component[0], parentStyle)
+
+			case typeof component === 'string':
+				return { ...parentStyle }
+
+			case typeof component === 'object': {
+				const style = { ...parentStyle }
+				for (const key of Object.values(STYLE_KEYS)) {
+					if (component[key] === undefined) continue
+					style[key] = component[key] as any
+				}
+				return style
+			}
+
+			default:
+				console.warn('Unknown component type in getComponentStyle:', component)
+				return { ...parentStyle }
+		}
+	}
+
+	constructor(public component: TextElement) {}
+
+	toString(minify = true, minecraftVersion = TextComponent.defaultMinecraftVersion) {
+		return TextComponent.stringify(this.component, { minecraftVersion, minify })
+	}
+
+	toJSON(optimized = false): TextElement {
+		if (optimized) return this.optimized().component
+		return this.component
+	}
 	/**
 	 * Returns a new TextComponent with the same content but restructured for minimal length when serialized to JSON.
+	 *
+	 * If `explicitStyles` is true, all styles will be explicitly set on each component,
+	 * even if they are the same as the parent style.
 	 */
-	optimized() {}
+	optimized(explicitStyles = false): TextComponent {
+		const optimized: Array<string | TextObject> = []
+
+		const processComponent = (element: TextElement, parentStyle: TextComponentStyle = {}) => {
+			const style = TextComponent.getComponentStyle(element, parentStyle)
+			const previous = optimized[optimized.length - 1]
+			switch (true) {
+				case Array.isArray(element): {
+					for (const child of element) {
+						processComponent(child, style)
+					}
+					break
+				}
+
+				case typeof element === 'string':
+					// Merge with previous element if possible
+					if (
+						typeof previous === 'string' &&
+						TextComponent.hasSameStyle(style, parentStyle)
+					) {
+						optimized[optimized.length - 1] = previous + element
+						break
+					} else if (
+						typeof previous === 'object' &&
+						previous.text !== undefined &&
+						TextComponent.hasSameStyle(style, previous)
+					) {
+						previous.text += element
+						break
+					}
+
+					if (!explicitStyles && TextComponent.hasSameStyle(style, parentStyle)) {
+						optimized.push(element)
+						break
+					}
+					optimized.push({ ...parentStyle, text: element })
+					break
+
+				case typeof element === 'object': {
+					const style = TextComponent.getComponentStyle(element, parentStyle)
+					const processed = { ...element }
+					delete processed.with
+					delete processed.extra
+					optimized.push({ ...style, ...processed })
+
+					const { with: withArray = [], extra: extraArray = [] } = element
+
+					if (withArray.length > 0) {
+						processComponent(withArray, style)
+					}
+					if (extraArray.length > 0) {
+						processComponent(extraArray, style)
+					}
+					break
+				}
+
+				default:
+					console.warn('Unknown component type in flatten:', element)
+					break
+			}
+		}
+
+		processComponent(this.component)
+
+		return TextComponent.fromJSON(optimized)
+	}
 }
