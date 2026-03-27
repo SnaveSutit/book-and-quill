@@ -1718,7 +1718,7 @@ export class TextComponentParser {
 		} else if (this.s.item === CHARS.t || this.s.item === CHARS.f) {
 			return this.parseBoolean()
 		} else if (CHARSETS.NUMBER_START.includes(this.s.item)) {
-			return this.parseNumber()
+			return Number(this.parseNumber())
 		} else if (CHARSETS.LITERAL_START.includes(this.s.item)) {
 			return this.parseLiteral()
 		} else {
