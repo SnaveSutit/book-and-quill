@@ -699,7 +699,7 @@ export class TextComponentParser {
 							)
 						}
 						const colorString = this.parseHashedHexColor()
-						return { key: 'color', value: colorString }
+						return { key: 'color', value: this.normalizeHexColor(colorString) }
 					} else if (this.s.peek(2) === '0x') {
 						if (obj.color !== undefined) {
 							this.throwSyntax(
@@ -1040,8 +1040,7 @@ export class TextComponentParser {
 	private parseTextObjectColor(): Color {
 		const color = this.parseTextPrimitive()
 		if (color.startsWith('#')) {
-			this.normalizeHexColor(color)
-			return color as `#${string}`
+			return this.normalizeHexColor(color) as `#${string}`
 		} else if (color in COLORS) {
 			return color as keyof typeof COLORS
 		} else {
@@ -1914,8 +1913,7 @@ export class TextComponentParser {
 		maxLength = Infinity
 	): string {
 		const start = this.s.cursor
-		let str: string = ''
-		while (this.s.item && digitCharset.includes(this.s.item)) {
+		while (this.s.item != undefined && digitCharset.includes(this.s.item)) {
 			if (this.s.cursor - start > maxLength) {
 				this.throwSyntax(`Too many ${name} digits (max ${maxLength})`, this.s)
 			}
@@ -1950,6 +1948,7 @@ export class TextComponentParser {
 	}
 
 	private normalizeHexColor(color: string): string {
+		color = color.replaceAll(`_`, ``)
 		if (color.startsWith('0x')) color = '#' + color.substring(2)
 		if (!/^#[0-9a-fA-F]{6}$/i.test(color)) {
 			this.throwSyntax(`Invalid hex color '${color}'`, this.s)
@@ -1958,6 +1957,7 @@ export class TextComponentParser {
 	}
 
 	private normalizeHex8Color(color: string): string {
+		color = color.replaceAll(`_`, ``)
 		if (color.startsWith('0x')) color = '#' + color.substring(2)
 		if (!/^#[0-9a-fA-F]{8}$/i.test(color)) {
 			this.throwSyntax(`Invalid hex color '${color}'`, this.s)

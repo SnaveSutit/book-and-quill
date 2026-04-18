@@ -121,7 +121,8 @@ describe('TextComponentParser', () => {
 			test('hex colors', () => {
 				const validCases: Array<[string, TextElement]> = [
 					['{color:"#00aced"}', { color: '#00aced', text: '' }],
-					['{color:"#FF5555"}', { color: '#FF5555', text: '' }],
+					['{color:"#FF5555"}', { color: '#ff5555', text: '' }],
+					['{color:"#FF_55_55"}', { color: '#ff5555', text: '' }],
 				]
 				for (const [input, expected] of validCases) {
 					expect(modernParse(input)).toEqual(expected)
