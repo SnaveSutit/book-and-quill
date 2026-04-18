@@ -5,8 +5,8 @@ import {
 	type ModernHoverEvent,
 	type TextElement,
 	type TextObject,
-} from './definitions'
-import { compareVersions } from './util'
+} from './definitions.js'
+import { compareVersions } from './util.js'
 
 enum FEATURES {
 	REQUIRE_DOUBLE_QUOTES = 1 << 0,

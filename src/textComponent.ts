@@ -6,10 +6,10 @@ import {
 	TextComponentStyle,
 	TextElement,
 	TextObject,
-} from './definitions'
+} from './definitions.js'
 import tinycolor from 'tinycolor2'
-import { TextComponentParser } from './parser'
-import { TextComponentStringifier } from './stringifier'
+import { TextComponentParser } from './parser.js'
+import { TextComponentStringifier } from './stringifier.js'
 
 export class TextComponent {
 	static defaultStyle: TextComponentStyle = { color: 'white' }

@@ -1,6 +1,6 @@
 import { StringStream } from 'generic-stream'
-import { UNICODE_TABLE } from './generated/unicodeTable'
-import { SyntaxPointerError } from './syntaxPointerError'
+import { UNICODE_TABLE } from './generated/unicodeTable.js'
+import { SyntaxPointerError } from './syntaxPointerError.js'
 
 const enum CHARS {
 	SPACE = 32,

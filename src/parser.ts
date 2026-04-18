@@ -1,7 +1,7 @@
 import { StringStream } from 'generic-stream'
-import { TextComponent } from './textComponent'
-import { compareVersions, MergeUnion } from './util'
-import { SyntaxPointerError, SyntaxErrorOptions } from './syntaxPointerError'
+import { TextComponent } from './textComponent.js'
+import { compareVersions, MergeUnion } from './util.js'
+import { SyntaxPointerError, SyntaxErrorOptions } from './syntaxPointerError.js'
 import {
 	Color,
 	COLORS,
@@ -16,7 +16,7 @@ import {
 	ShadowColor,
 	TextElement,
 	TextObject,
-} from './definitions'
+} from './definitions.js'
 
 function charcodeArray(str: string): number[] {
 	return Array.from(str).map(c => c.charCodeAt(0))

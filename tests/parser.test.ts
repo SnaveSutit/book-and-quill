@@ -79,6 +79,18 @@ describe('TextComponentParser', () => {
 						],
 						expect: { text: 'Hello, World!' },
 					},
+					{
+						input: [`{ 'Hello, World!', red }`],
+						expect: { text: 'Hello, World!', color: 'red' },
+					},
+					{
+						input: [
+							`{ 'Hello, World!', #00aced }`,
+							`{ 'Hello, World!', 0x00aced }`,
+							`{ 'Hello, World!' 0x00aced }`,
+						],
+						expect: { text: 'Hello, World!', color: '#00aced' },
+					},
 				])
 				expectErrorResults(modernParse, [
 					{
