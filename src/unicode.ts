@@ -82,6 +82,10 @@ export class UnicodeString {
 
 	indexOf: string[]['indexOf']
 
+	static fromChars(chars: string[]) {
+		return new UnicodeString(chars.join(''))
+	}
+
 	constructor(public str: string) {
 		this.resolveEscapeSequences()
 
@@ -90,10 +94,6 @@ export class UnicodeString {
 		for (const char of this.str.matchAll(/[^]/gmu)) {
 			this.chars.push(char[0])
 		}
-	}
-
-	static fromChars(chars: string[]) {
-		return new UnicodeString(chars.join(''))
 	}
 
 	[Symbol.iterator]() {
@@ -110,6 +110,16 @@ export class UnicodeString {
 
 	slice(start?: number, end?: number) {
 		return UnicodeString.fromChars(this.chars.slice(start, end))
+	}
+
+	at(index: number) {
+		if (index < 0 || index >= this.chars.length) return undefined
+		return this.chars[index]
+	}
+
+	append(char: string) {
+		this.chars.push(char)
+		this.str += char
 	}
 
 	toString() {
