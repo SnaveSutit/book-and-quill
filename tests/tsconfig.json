@@ -3,9 +3,9 @@
 	"exclude": ["**/node_modules/**"],
 	"compilerOptions": {
 		"noImplicitAny": true,
-		"module": "ES2022",
+		"module": "nodenext",
 		"target": "ES2022",
-		"moduleResolution": "node",
+		"moduleResolution": "nodenext",
 		"strict": true,
 		"types": ["bun"],
 		"resolveJsonModule": true,

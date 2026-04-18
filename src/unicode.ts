@@ -109,7 +109,7 @@ export class UnicodeString {
 	}
 
 	slice(start?: number, end?: number) {
-		return
+		return UnicodeString.fromChars(this.chars.slice(start, end))
 	}
 
 	toString() {
