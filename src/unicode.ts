@@ -132,7 +132,7 @@ export class UnicodeString {
 
 		let startIndex = 0
 
-		while (s.item) {
+		while (s.item != undefined) {
 			if ((s.item as number) === CHARS.BACKSLASH) {
 				const escaped = s.next
 

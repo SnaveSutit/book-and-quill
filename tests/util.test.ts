@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'bun:test'
-import { compareVersions } from '../src/util'
+import { compareVersions } from '../src/util.js'
 
 describe('compareVersions', () => {
 	test('compares equal and ordered versions', () => {

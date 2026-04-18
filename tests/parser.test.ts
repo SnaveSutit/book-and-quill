@@ -1,8 +1,8 @@
 import { expect, describe, test } from 'bun:test'
-import { TextComponent } from '../src/textComponent'
-import { COLORS, TextElement } from '../src/definitions'
-import { TextComponentParser } from '../src/parser'
-import { SyntaxPointerError } from '../src/syntaxPointerError'
+import { TextComponent } from '../src/textComponent.js'
+import { COLORS, TextElement } from '../src/definitions.js'
+import { TextComponentParser } from '../src/parser.js'
+import { SyntaxPointerError } from '../src/syntaxPointerError.js'
 
 type ErrorPattern = string | RegExp | (new (...args: any[]) => Error)
 type InputOutputMap<TInput, TOutput> = Array<{ input: TInput | TInput[]; expect: TOutput }>

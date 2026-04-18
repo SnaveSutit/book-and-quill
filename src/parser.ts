@@ -1998,7 +1998,7 @@ export class TextComponentParser {
 			)
 		}
 		const start = this.s.cursor
-		while (this.s.item && CHARSETS.LITERAL.includes(this.s.item)) {
+		while (this.s.item != undefined && CHARSETS.LITERAL.includes(this.s.item)) {
 			this.s.advance()
 		}
 		const str = this.s.slice(start, this.s.cursor)
@@ -2023,7 +2023,7 @@ export class TextComponentParser {
 
 		const start = this.s.cursor
 
-		while (this.s.item) {
+		while (this.s.item != undefined) {
 			if (this.s.item === CHARS.BACKSLASH) {
 				this.parseEscapeSequence()
 				continue

@@ -1,5 +1,5 @@
 import { expect, describe, test } from 'bun:test'
-import { TextComponent } from '../src/textComponent'
+import { TextComponent } from '../src/textComponent.js'
 
 describe('TextComponent utilities', () => {
 	test('hasSameStyle compares style keys', () => {

@@ -1,7 +1,7 @@
 import { describe, expect, test } from 'bun:test'
-import type { TextElement } from '../src/definitions'
-import { TextComponentParser } from '../src/parser'
-import { TextComponentStringifier } from '../src/stringifier'
+import type { TextElement } from '../src/definitions.js'
+import { TextComponentParser } from '../src/parser.js'
+import { TextComponentStringifier } from '../src/stringifier.js'
 
 function roundTrip(version: string, element: TextElement): TextElement {
 	const stringifier = new TextComponentStringifier({ minecraftVersion: version })

@@ -1,6 +1,6 @@
 import { expect, describe, it } from 'bun:test'
-import { UnicodeString } from '../src/unicode'
-import { SyntaxPointerError } from '../src/syntaxPointerError'
+import { UnicodeString } from '../src/unicode.js'
+import { SyntaxPointerError } from '../src/syntaxPointerError.js'
 
 describe('UnicodeString', () => {
 	it('resolves common escape sequences', () => {
@@ -16,6 +16,11 @@ describe('UnicodeString', () => {
 	it('resolves \\uhhhh escape sequences', () => {
 		const str = new UnicodeString('\\u0048\\u0065\\u006C\\u006C\\u006F')
 		expect(str.toString()).toBe('Hello')
+	})
+
+	it('parses past \\u0000', () => {
+		const str = new UnicodeString('\u0000')
+		expect(str.toString()).toBe('\u0000')
 	})
 
 	it('resolves \\Uhhhhhhhh escape sequences', () => {
