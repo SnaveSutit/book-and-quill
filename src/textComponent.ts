@@ -147,17 +147,19 @@ export class TextComponent {
 		return TextComponent.stringify(this.component, { minecraftVersion, minify })
 	}
 
+	toJSON(): TextElement
+	toJSON(optimized: true): TextElement[]
 	toJSON(optimized = false): TextElement {
-		if (optimized) return this.optimized().component
+		if (optimized) return this.optimized()
 		return this.component
 	}
 	/**
-	 * Returns a new TextComponent with the same content but restructured for minimal length when serialized to JSON.
+	 * Returns a TextElement[] with the same content as this TextComponent, but restructured for minimal length when serialized to JSON.
 	 *
 	 * If `explicitStyles` is true, all styles will be explicitly set on each component,
 	 * even if they are the same as the parent style.
 	 */
-	optimized(explicitStyles = false): TextComponent {
+	optimized(explicitStyles = false): TextElement[] {
 		const optimized: Array<string | TextObject> = []
 
 		const processComponent = (element: TextElement, parentStyle: TextComponentStyle = {}) => {
@@ -221,6 +223,6 @@ export class TextComponent {
 
 		processComponent(this.component)
 
-		return TextComponent.fromJSON(optimized)
+		return optimized
 	}
 }
