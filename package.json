@@ -17,6 +17,12 @@
 		"type": "git",
 		"url": "git+https://github.com/SnaveSutit/book-and-quill.git"
 	},
+	"exports": {
+		".": {
+			"default": "./dist/index.js",
+			"types": "./dist/index.d.ts"
+		}
+	},
 	"scripts": {
 		"build": "tsc",
 		"dev": "tsc --watch",
