@@ -79,10 +79,7 @@ describe('TextComponent API', () => {
 		expect(parsed).toEqual({ text: 'Hello', color: 'red' })
 
 		expect(
-			TextComponent.stringify(
-				{ text: 'Hello', color: 'red' },
-				{ minecraftVersion: '1.20.4' }
-			)
+			TextComponent.stringify({ text: 'Hello', color: 'red' }, { minecraftVersion: '1.20.4' })
 		).toBe('{"text":Hello,"color":red}')
 
 		expect(TextComponent.fromString('{text:"Hello"}').component).toEqual({ text: 'Hello' })
@@ -111,7 +108,7 @@ describe('TextComponent API', () => {
 	test('instance toString and toJSON support minified and optimized output', () => {
 		const component = new TextComponent([{ text: 'A', color: 'red' }, 'B', { text: 'C' }])
 
-		expect(component.toString()).toBe("[{text:A,color:red},B,{text:C}]")
+		expect(component.toString()).toBe('[{text:A,color:red},B,{text:C}]')
 		expect(component.toString(false)).toContain('\n')
 		expect(component.toJSON()).toEqual([{ text: 'A', color: 'red' }, 'B', { text: 'C' }])
 		expect(component.toJSON(true)).toEqual([
@@ -121,9 +118,9 @@ describe('TextComponent API', () => {
 	})
 
 	test('optimized merges compatible adjacent content and supports explicit styles', () => {
-		expect(TextComponent.fromJSON(['A', 'B']).optimized().component).toEqual(['AB'])
+		expect(TextComponent.fromJSON(['A', 'B']).optimized()).toEqual(['AB'])
 
-		expect(TextComponent.fromJSON([{ text: 'A', color: 'red' }, 'B']).optimized().component).toEqual([
+		expect(TextComponent.fromJSON([{ text: 'A', color: 'red' }, 'B']).optimized()).toEqual([
 			{ color: 'red', text: 'AB' },
 		])
 
@@ -132,7 +129,7 @@ describe('TextComponent API', () => {
 				{ text: 'A', color: 'red' },
 				'B',
 				{ text: 'C', color: 'red', bold: true },
-			]).optimized(true).component
+			]).optimized(true)
 		).toEqual([
 			{ color: 'red', text: 'AB' },
 			{ color: 'red', bold: true, text: 'C' },
