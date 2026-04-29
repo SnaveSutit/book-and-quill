@@ -184,4 +184,14 @@ describe('TextComponentStringifier', () => {
 			/Click events of type 'show_dialog' are not supported in versions below 1\.21\.6/
 		)
 	})
+
+	test('puts quotes around strings that start with number characters in modern format', () => {
+		const stringifier = new TextComponentStringifier({ minecraftVersion: '1.21.5' })
+
+		expect(stringifier.stringify('1startsWithNumber')).toBe(`'1startsWithNumber'`)
+		expect(stringifier.stringify('-startsWithNumber')).toBe(`'-startsWithNumber'`)
+		expect(stringifier.stringify('+startsWithNumber')).toBe(`'+startsWithNumber'`)
+		expect(stringifier.stringify('.startsWithNumber')).toBe(`'.startsWithNumber'`)
+		expect(stringifier.stringify('100')).toBe(`'100'`)
+	})
 })
