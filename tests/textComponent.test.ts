@@ -80,7 +80,7 @@ describe('TextComponent API', () => {
 
 		expect(
 			TextComponent.stringify({ text: 'Hello', color: 'red' }, { minecraftVersion: '1.20.4' })
-		).toBe('{"text":Hello,"color":red}')
+		).toBe('{"text":"Hello","color":"red"}')
 
 		expect(TextComponent.fromString('{text:"Hello"}').component).toEqual({ text: 'Hello' })
 

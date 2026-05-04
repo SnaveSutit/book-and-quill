@@ -52,10 +52,12 @@ export class TextComponentStringifier {
 			str = str.replaceAll('\\s', ' ')
 		}
 
-		// String cannot start with `.`, `-`, `+`, or a digit, or it will be interpreted as a number.
-		// If the string only contains [a-zA-Z0-9_.+-], we can leave it unquoted.
-		if (/^[a-zA-Z_][a-zA-Z0-9_\-.+]*$/.test(str)) {
-			return str
+		if (!(this.enabledFeatures & FEATURES.REQUIRE_DOUBLE_QUOTES)) {
+			// String cannot start with `.`, `-`, `+`, or a digit, or it will be interpreted as a number.
+			// If the string only contains [a-zA-Z0-9_.+-], we can leave it unquoted.
+			if (/^[a-zA-Z_][a-zA-Z0-9_\-.+]*$/.test(str)) {
+				return str
+			}
 		}
 
 		// Remove escaped quotes for accurate detection

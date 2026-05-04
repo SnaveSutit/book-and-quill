@@ -28,6 +28,16 @@ describe('TextComponentStringifier', () => {
 		expect(modern).not.toContain('"text":')
 	})
 
+	test('uses different string quoting and escaping rules by version', () => {
+		const legacy = new TextComponentStringifier({ minecraftVersion: '1.20.4' })
+		const modern = new TextComponentStringifier({ minecraftVersion: '1.21.5' })
+
+		const element: TextElement = { text: 'hello', color: 'red' }
+
+		expect(legacy.stringify(element)).toBe('{"text":"hello","color":"red"}')
+		expect(modern.stringify(element)).toBe('{text:hello,color:red}')
+	})
+
 	test('handles string quoting and escaping in modern format', () => {
 		const stringifier = new TextComponentStringifier({ minecraftVersion: '1.21.5' })
 
